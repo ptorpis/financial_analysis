@@ -1,0 +1,11 @@
+{
+    "current_ratio": "Current Assets / Current Liabilities",
+    "quick_ratio": "(Current Assets - Inventory) / Current Liabilities",
+    "gross_profit": "(Total Revenue - Cost Of Revenue) / Total Revenue",
+    "net_profit": "Net Income / Total Revenue",
+    "roa": "Net Income / Total Assets",
+    "roe": "Net Income / Stockholders Equity",
+    "asset_turnover": "(Total Revenue - Cost Of Revenue) / Total Assets",
+    "debt_to_equity": "Total Debt / Stockholders Equity",
+    "interest_cover": "Net Income / Interest Expense"
+}
