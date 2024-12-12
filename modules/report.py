@@ -65,7 +65,7 @@ def generate_plots(ticker='MSFT'):
     """
 
     # Generate a plot for all the growth rates
-    df_growth = pd.read_csv(f'../data_output/report/analysis/{ticker}_growth.csv', header=0)
+    df_growth = pd.read_csv(f'../data_output/{ticker}_growth_analysis.csv', header=0)
     df_growth.set_index('ratio', inplace=True)
 
     ax = df_growth.iloc[:, 1:].T.plot(kind='bar', figsize=(12, 6), width=0.8)
@@ -83,7 +83,7 @@ def generate_plots(ticker='MSFT'):
 
     # Save plot
     plt.tight_layout()  # Adjust layout to fit everything
-    plt.savefig(f'../data_output/report/{ticker}_growth_rates_plot.png', format='png')
+    plt.savefig(f'../report/{ticker}_growth_rates_plot.png', format='png')
 
 
 def strong_points(ticker='MSFT'):
@@ -150,10 +150,10 @@ class RiskAnalysis():
     This report is only meant to guide the usr into the right direction.
     """
     def __init__(self, ticker='MSFT'):
-        self.df_growth = pd.read_csv(f'../data_output/report/analysis/{ticker}_growth.csv', header=0)
+        self.df_growth = pd.read_csv(f'../data_output/{ticker}_growth_analysis.csv', header=0)
         self.df_growth.set_index('ratio', inplace=True)
 
-        self.df_data = pd.read_csv(f'../data_output/report/analysis/{ticker}_data.csv', header=0)
+        self.df_data = pd.read_csv(f'../data_output/{ticker}_data_analysis.csv', header=0)
 
         self.df_averages = pd.read_csv('../data/averages.csv')
         self.sector = yf.Ticker(ticker).info.get('sector', 'n/a').lower()
@@ -178,7 +178,7 @@ class RiskAnalysis():
 
 if __name__ == "__main__":
     generate_data()
-    #generate_plots()
+    generate_plots()
     #risk = RiskAnalysis()
     #risk.profitability_warning()
     

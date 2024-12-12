@@ -182,12 +182,12 @@ class FinancialAnalyzer:
         return self.df_growth_rates
     
     def export_csv(self):
-        self.data.to_csv(f"../data_output/report/analysis/{self.ticker_text}_data.csv", index=False)
-        self.df_ratios.to_csv(f"../data_output/report/analysis/{self.ticker_text}_ratios.csv", index=False)
-        self.df_difference.to_csv(f"../data_output/report/analysis/{self.ticker_text}_difference.csv", index=False)
+        self.data.to_csv(f"../data_output/{self.ticker_text}_data_analysis.csv", index=False)
+        self.df_ratios.to_csv(f"../data_output/{self.ticker_text}_ratios_analysis.csv", index=False)
+        self.df_difference.to_csv(f"../data_output/{self.ticker_text}_difference_analysis.csv", index=False)
 
         if len(self.years) >= 2:
-            self.df_growth_rates.to_csv(f"../data_output/report/analysis/{self.ticker_text}_growth.csv")
+            self.df_growth_rates.to_csv(f"../data_output/{self.ticker_text}_growth_analysis.csv")
 
 
 
