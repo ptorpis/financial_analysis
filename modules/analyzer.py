@@ -260,15 +260,15 @@ def main():
         match export_method:
             case 1: # Exporting to .csv
                 
-                CompanyData.to_csv(f"../data_output/{ticker.upper()}_data.csv", index=False)
-                Ratios.to_csv(f"../data_output/{ticker.upper()}_ratios.csv", index=False)
-                Difference.to_csv(f"../data_output/{ticker.upper()}_difference.csv", index=False)
+                CompanyData.to_csv(f"../data_output/{ticker.upper()}_data_analysis.csv", index=False)
+                Ratios.to_csv(f"../data_output/{ticker.upper()}_ratios_analysis.csv", index=False)
+                Difference.to_csv(f"../data_output/{ticker.upper()}_difference_analysis.csv", index=False)
 
                 if years_request >= 2:
-                    GrowthRates.to_csv(f"../data_output/{ticker.upper()}_growth.csv")
+                    GrowthRates.to_csv(f"../data_output/{ticker.upper()}_growth_analysis.csv")
 
             case 2: # Exporting to Excel File (.xlsx)
-                with pd.ExcelWriter(f"../data_output/{ticker.upper()}_data.xlsx") as writer:
+                with pd.ExcelWriter(f"../data_output/{ticker.upper()}_data_analysis.xlsx") as writer:
                     
                     CompanyData.to_excel(writer, sheet_name="Data", index=False)
                     Ratios.to_excel(writer, sheet_name="Ratios", index=False)

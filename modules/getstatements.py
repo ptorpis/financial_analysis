@@ -97,13 +97,13 @@ def retrieve_and_export_statements(ticker_request: str, export, report=False):
             qCashFlow.to_excel(writer, sheet_name="Cash Flow")
 
     if report:
-        BalanceSheet.to_csv(f'../data_output/report/statements/balance_sheet{ticker_request.upper()}.csv')
-        IncomeStatement.to_csv(f'../data_output/report/statements/income_statement{ticker_request.upper()}.csv')
-        CashFlow.to_csv(f'../data_output/report/statements/cash_flow{ticker_request.upper()}.csv')
+        BalanceSheet.to_csv(f'../report/balance_sheet{ticker_request.upper()}.csv')
+        IncomeStatement.to_csv(f'../report/income_statement{ticker_request.upper()}.csv')
+        CashFlow.to_csv(f'../report/cash_flow{ticker_request.upper()}.csv')
 
-        qBalanceSheet.to_csv(f'../data_output/report/statements/qbalance_sheet{ticker_request.upper()}.csv')
-        qIncomeStatement.to_csv(f'../data_output/report/statements/qincome_statement{ticker_request.upper()}.csv')
-        qCashFlow.to_csv(f'../data_output/report/statements/qcash_flow{ticker_request.upper()}.csv')
+        qBalanceSheet.to_csv(f'../report/qbalance_sheet{ticker_request.upper()}.csv')
+        qIncomeStatement.to_csv(f'../report/qincome_statement{ticker_request.upper()}.csv')
+        qCashFlow.to_csv(f'../report/qcash_flow{ticker_request.upper()}.csv')
 
 def get_yn(prompt: str) -> bool:
     while True:
