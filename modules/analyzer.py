@@ -123,7 +123,7 @@ class FinancialAnalyzer:
         # Declaring and returning the ratios table
         self.df_ratios = df_ratios
 
-        print(f"\nRatios Table:\n{df_ratios}\n")
+        #print(f"\nRatios Table:\n{df_ratios}\n")
         return df_ratios
 
     
@@ -153,7 +153,7 @@ class FinancialAnalyzer:
             
             self.df_difference = self.df_difference._append(difference, ignore_index=True)
 
-        print(f"Difference Table: \n{self.df_difference}")
+        #print(f"Difference Table: \n{self.df_difference}")
         return self.df_difference
 
 
@@ -178,7 +178,7 @@ class FinancialAnalyzer:
             
             self.df_growth_rates = self.df_growth_rates._append(growth_rates, ignore_index=True)
         
-        print(f"\nGrowth Rate Table:\n{self.df_growth_rates}")
+        #print(f"\nGrowth Rate Table:\n{self.df_growth_rates}")
         return self.df_growth_rates
     
     def export_csv(self):

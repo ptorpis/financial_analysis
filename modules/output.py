@@ -12,38 +12,6 @@ from reportlab.platypus import Table, TableStyle
 
 datapoints = pd.read_csv('../data/datapoints.csv')
 
-def generate_data(ticker='MSFT'):
-    statements = getstatements # Statements are exported into "/report" and the analysis tables are put into "/data_output"
-    statements.retrieve_and_export_statements(ticker, export=False, report=True)
-
-    analysis = analyzer.FinancialAnalyzer(ticker)
-    company_data = analysis.load_data(
-        datapoints['balance_sheet'].tolist(),
-        datapoints['income_statement'].dropna().tolist(),
-        datapoints['cash_flow'].dropna().tolist()
-        )
-    company_data = company_data.T
-
-    company_ratios = analysis.analyze()
-    company_ratios = company_ratios.T
-
-    difference = analysis.difference()
-    growth_rates = analysis.growth_rates()
-
-    return {
-        'company_data': company_data,
-        'company_ratios': company_ratios,
-        'difference': difference,
-        'growth_rates': growth_rates
-    }
-
-
-    
-
-
-def plots(ticker='MSFT'):
-    pass
-
 
 def generate_report(ticker_symbol, output_file):
         # Fetch company data using yfinance
@@ -101,11 +69,12 @@ def generate_report(ticker_symbol, output_file):
         datapoints['income_statement'].dropna().tolist(),
         datapoints['cash_flow'].dropna().tolist()
         )
+    
     company_data = company_data.T
 
     company_ratios = analysis.analyze()
     company_ratios = company_ratios.T
-
+    print(company_ratios)
     difference = analysis.difference()
     growth_rates = analysis.growth_rates()
 
@@ -157,7 +126,7 @@ def generate_report(ticker_symbol, output_file):
 
     # Save the PDF
     c.save()
-    print(f"Cover page generated: {output_file}")
+    print(f"Generated: {output_file}")
 
 
 
