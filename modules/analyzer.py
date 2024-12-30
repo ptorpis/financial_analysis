@@ -96,7 +96,7 @@ class FinancialAnalyzer:
 
         for year, row in self.data.iterrows():
             current_ratios = {'year': CURRENT_YEAR - year}
-            print(f'Ratios for {CURRENT_YEAR - year}, for {self.ticker}')
+            #print(f'Ratios for {CURRENT_YEAR - year}, for {self.ticker}')
             for ratio_name, formula in formulas.items(): # unpack the formulas 1 by 1 and calculate the ratios
                 try:
                     formatted_formula = formula
@@ -108,7 +108,7 @@ class FinancialAnalyzer:
                     current_ratios[ratio_name] = result
 
 
-                    print(f"  {ratio_name.replace('_', ' ')}: {result:.2f}")
+                    #print(f"  {ratio_name.replace('_', ' ')}: {result:.2f}")
                 
                 # error handling
                 except KeyError:
