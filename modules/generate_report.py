@@ -6,7 +6,8 @@ from reportlab.lib import colors
 import pandas as pd
 import yfinance as yf
 import analyzer
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Function to create a table from a dataframe
 def create_table_from_dataframe(df):
@@ -60,6 +61,10 @@ def get_info(ticker_symbol):
             "website": "N/A"
             }
     
+def plots(ticker, sector):
+    averages = pd.read_csv('../data/averages.csv', header=0)
+    sector_avg = averages[sector]
+
 
 # Function to generate the PDF
 def generate_pdf_report(file_name, symbol_request='MSFT'):
@@ -180,13 +185,113 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     elements.append(Paragraph("Visual Analysis of Key Metrics", styles['Heading1']))
     elements.append(Spacer(1, 12))
     elements.append(Paragraph("The following graphs represent the trends and patterns of important financial metrics.", styles['Normal']))
-    elements.append(Spacer(1, 24))
     # Placeholder for Plot Images
     # images = ['path_to_plot1.png', 'path_to_plot2.png']  # Replace with actual paths
     # for img_path in images:
     #     elements.append(Image(img_path, width=400, height=300))
     #     elements.append(Spacer(1, 24))
+
+    sector = info['sector'].lower()
+    averages = pd.read_csv('../data/averages.csv')
+
+    ratio_index_map = {
+        'current_ratio': 0,
+        'quick_ratio': 1,
+        'gross_profit': 2,
+        'net_profit': 3,
+        'roa': 4,
+        'roe': 5,
+        'asset_turnover': 6,
+        'debt_to_equity': 7,
+        'interest_cover': 8
+    }
     
+    columns_to_plot = ['year', 'current_ratio', 'quick_ratio', 'debt_to_equity']
+    plot_df = company_ratios[columns_to_plot]
+
+    # Step 3: Create subplots
+
+    # Subplot configuration
+    ratios_to_plot = [
+        ('current_ratio', 'Current Ratio', 'skyblue', 'Sector Avg - Current Ratio', 'blue'),
+        ('quick_ratio', 'Quick Ratio', 'lightgreen', 'Sector Avg - Quick Ratio', 'green'),
+        ('debt_to_equity', 'Debt to Equity', 'salmon', 'Sector Avg - Debt to Equity', 'red')
+    ]
+
+    x = np.arange(len(plot_df.index))  # Positions for bars
+    width = 0.25  # Narrower bars to look more compact
+
+    # Step 3: Create the subplots with a vertical orientation
+    fig, axs = plt.subplots(3, 1, figsize=(6, 12))  # More vertical layout with increased height and reduced width
+
+    for i, (column, title, color, avg_label, avg_color) in enumerate(ratios_to_plot):
+        ax = axs[i]  # Select subplot
+        
+        # Plot bars for each ratio
+        ax.bar(x, plot_df[column], width, label=f'{title} {symbol_request}', color=color)
+        
+        # Add horizontal line for the sector average
+        avg_value = averages[sector].iloc[ratio_index_map[column]]
+        for xpos in x:
+            ax.hlines(
+                y=avg_value,
+                xmin=xpos - width / 2,  # Align horizontal line with narrower bars
+                xmax=xpos + width / 2,
+                color=avg_color,
+                linestyle='--',
+                label=avg_label if xpos == 0 else None
+            )
+        
+        # Set labels and titles for each subplot
+        ax.set_xlabel('Year')
+        ax.set_ylabel('Value')
+        ax.set_title(f'{title} vs {sector} Sector Average')
+        
+        # Set the x-axis tick labels as integers (removing the decimal point)
+        ax.set_xticks(x)
+        ax.set_xticklabels(plot_df['year'].map(int))  # Use map(int) to remove the .0
+        
+        ax.legend(loc='upper right')
+
+    # Fine-tune the layout for a more compact, vertical appearance
+    plt.tight_layout()  # Automatically adjusts spacing between plots
+    plt.subplots_adjust(hspace=0.5)  # Optional: fine-tune the vertical space between subplots
+
+    # Save or show the plot
+    plt.savefig(f'../data_output/{symbol_request}_ratios.png', dpi=300)
+
+    elements.append(Image(f'../data_output/{symbol_request}_ratios.png', width=3*72, height=6*72))
+
+    growth_rates = analysis.growth_rates()
+    years = ['2022', '2023', '2024']
+    ratios_to_plot = growth_rates['ratio'].values  # Ratio names
+    ratios_growth = growth_rates.drop('ratio', axis=1).values  # Growth rate values for each ratio
+
+    # Plot all the growth rates on the same chart
+    plt.figure(figsize=(10, 6))
+
+    # Use matplotlib.colormaps to get a distinct colormap
+    colormap = plt.colormaps['tab10']  # Access the 'tab10' colormap
+    colors = [colormap(i / len(ratios_to_plot)) for i in range(len(ratios_to_plot))]  # Generate distinct colors
+
+    # Plot each ratio with a unique color
+    for i, (ratio, growth) in enumerate(zip(ratios_to_plot, ratios_growth)):
+        plt.plot(years, growth, label=ratio, marker='o', color=colors[i])
+
+    # Set labels and title
+    plt.xlabel('Year')
+    plt.ylabel('Growth Rate (%)')
+    plt.title('Growth Rates of Financial Ratios Over Time')
+
+    # Add a legend to identify each ratio
+    plt.legend(loc='best')
+
+    # Add grid for better readability
+    plt.grid(True)
+
+    # Save the plot as a PNG (optional)
+    plt.savefig(f'../data_output/{symbol_request}_rate_all.png', dpi=300)
+    elements.append(Image(f'../data_output/{symbol_request}_rate_all.png', width=8*72, height=4*72))
     elements.append(PageBreak())
 
     # Appendix Page
