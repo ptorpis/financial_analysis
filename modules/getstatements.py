@@ -64,7 +64,7 @@ class GetStatements:
             "qcash_flow": self.cash_flow.iloc[:, :PERIODS]
         }
 
-def retrieve_and_export_statements(ticker_request: str, export, report=False):
+def retrieve_and_export_statements(ticker_request: str, excel, csv):
     retriever = GetStatements(ticker_request)
     pd.set_option("display.max_rows", None)
 
@@ -81,29 +81,29 @@ def retrieve_and_export_statements(ticker_request: str, export, report=False):
     qIncomeStatement = quarterlyStatements["qicome_statement"]
     qCashFlow = quarterlyStatements["qcash_flow"]
 
-    print(f"{BalanceSheet}\n\n{IncomeStatement}\n\n{CashFlow}")
+    #print(f"{BalanceSheet}\n\n{IncomeStatement}\n\n{CashFlow}")
     
     
     # Export to Excel if requested
-    if export:
-        with pd.ExcelWriter(f"../data_output/{ticker_request.upper()}_data.xlsx") as writer:
+    if excel:
+        with pd.ExcelWriter(f"../data_output/excel/data_{ticker_request.upper()}.xlsx") as writer:
             BalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             IncomeStatement.to_excel(writer, sheet_name="Income Statement")
             CashFlow.to_excel(writer, sheet_name="Cash Flow")
                          
-        with pd.ExcelWriter(f"../data_output/{ticker_request.upper()}_quarterly_data.xlsx") as writer:
+        with pd.ExcelWriter(f"../data_output/excel/quarterly_data_{ticker_request.upper()}.xlsx") as writer:
             qBalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             qIncomeStatement.to_excel(writer, sheet_name="Income Statement")
             qCashFlow.to_excel(writer, sheet_name="Cash Flow")
 
-    if report:
-        BalanceSheet.to_csv(f'../report/balance_sheet_{ticker_request.upper()}.csv')
-        IncomeStatement.to_csv(f'../report/income_statement_{ticker_request.upper()}.csv')
-        CashFlow.to_csv(f'../report/cash_flow_{ticker_request.upper()}.csv')
+    if csv:
+        BalanceSheet.to_csv(f'../data_output/csv/balance_sheet_{ticker_request.upper()}.csv')
+        IncomeStatement.to_csv(f'../data_output/csv/income_statement_{ticker_request.upper()}.csv')
+        CashFlow.to_csv(f'../data_output/csv/cash_flow_{ticker_request.upper()}.csv')
 
-        qBalanceSheet.to_csv(f'../report/qbalance_sheet_{ticker_request.upper()}.csv')
-        qIncomeStatement.to_csv(f'../report/qincome_statement_{ticker_request.upper()}.csv')
-        qCashFlow.to_csv(f'../report/qcash_flow_{ticker_request.upper()}.csv')
+        qBalanceSheet.to_csv(f'../data_output/csv/qbalance_sheet_{ticker_request.upper()}.csv')
+        qIncomeStatement.to_csv(f'../data_output/csv/qincome_statement_{ticker_request.upper()}.csv')
+        qCashFlow.to_csv(f'../data_output/csv/qcash_flow_{ticker_request.upper()}.csv')
 
 def get_yn(prompt: str) -> bool:
     while True:
@@ -118,8 +118,10 @@ def get_yn(prompt: str) -> bool:
 # Run this only if the script is executed directly
 def main():
     ticker_request = input("Ticker Request: ").upper().strip()
-    export = get_yn("Export files? ")
-    retrieve_and_export_statements(ticker_request, export, report=True)
+    excel = get_yn("Export files? (xls)")
+    csv = get_yn("Export files? (csv)")
+
+    retrieve_and_export_statements(ticker_request, excel, csv)
 
 if __name__ == "__main__":
     main()

@@ -8,6 +8,9 @@ import yfinance as yf
 import analyzer
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
+import getstatements
+from datetime import datetime
 
 # Function to create a table from a dataframe
 def create_table_from_dataframe(df):
@@ -310,5 +313,55 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
 
 
 # Call the function to generate the PDF
+def main():
+    today_date = datetime.today().strftime('%y-%m-%d')
+    parser = argparse.ArgumentParser(
+        description='Python based program that can calculate financial ratios, growth rates, export financial statements and a report.',
+        usage='%(prog)s <ticker_request> [-r] [-s {excel,csv} [{excel,csv} ...]]\n Libraries Required (run this command): pip install -r requirements.txt\n Make sure pip is installed by running: pip --version'
+        )
+    
+    parser.add_argument(
+        'ticker_request',  # Name of the argument
+        type=str,
+        help='The ticker symbol of the company (e.g., MSFT, AAPL, etc.). Accepts all combinations of upper and lower case letters.'
+    )
+
+    parser.add_argument(
+        '-r', '--report',
+        action='store_true',
+        help='Generate a financial performance report.'
+        )
+    
+    parser.add_argument(
+        '-s', '--statements',
+        nargs='+',  # Accept one or more formats
+        choices=['excel', 'csv'],  # Limit options to 'excel' and 'csv'
+        help='Export financial statements in specified formats (choose: excel, csv, or both).'   
+    )
+
+    args = parser.parse_args()
+    args.ticker_request = args.ticker_request.upper()
+
+
+    if args.report:
+        generate_pdf_report(f"../report/financial_report_{args.ticker_request}_{today_date}.pdf", args.ticker_request)
+    
+    if args.statements:
+
+        export_excel = 'excel' in args.statements
+        export_csv = 'csv' in args.statements
+
+        getstatements.retrieve_and_export_statements(
+            ticker_request = args.ticker_request,
+            excel=export_excel,
+            csv=export_csv
+
+        )
+
+
+
+    if not args.report and not args.statements:
+        parser.print_help()
+
 if __name__ == "__main__":
-    generate_pdf_report("../report/Financial_Performance_Report.pdf")
+    main()
