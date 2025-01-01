@@ -11,6 +11,7 @@ import numpy as np
 import argparse
 import getstatements
 from datetime import datetime
+import os
 
 # Function to create a table from a dataframe
 def create_table_from_dataframe(df):
@@ -295,6 +296,7 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     # Save the plot as a PNG (optional)
     plt.savefig(f'../data_output/{symbol_request}_rate_all.png', dpi=300)
     elements.append(Image(f'../data_output/{symbol_request}_rate_all.png', width=8*72, height=4*72))
+    
     elements.append(PageBreak())
 
     # Appendix Page
@@ -309,6 +311,8 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     
     # Build the document with all the elements
     doc.build(elements)
+    os.remove(f'../data_output/{symbol_request}_ratios.png')
+    os.remove(f'../data_output/{symbol_request}_rate_all.png')
 
 
 

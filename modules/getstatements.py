@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import logging
+import os
 
 logging.basicConfig(
     filename='../.logs/main.log',
@@ -8,6 +9,18 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
 )
+
+def ensure_directories_exist():
+    # Define the directories that need to exist
+    directories = [
+        '../data_output/excel',
+        '../data_output/csv'
+    ]
+
+    # Check and create each directory
+    for directory in directories:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
 PERIODS = 4 # The max number of periods we are accessing through yFinance (anything more will give dubious data or missing altogether)
 
@@ -68,7 +81,7 @@ def retrieve_and_export_statements(ticker_request: str, excel, csv):
     retriever = GetStatements(ticker_request)
     pd.set_option("display.max_rows", None)
 
-    
+
     # Retrieve yearly statements
     yearlyStatements = retriever.get_statements()
     BalanceSheet = yearlyStatements["balance_sheet"]
@@ -83,27 +96,29 @@ def retrieve_and_export_statements(ticker_request: str, excel, csv):
 
     #print(f"{BalanceSheet}\n\n{IncomeStatement}\n\n{CashFlow}")
     
-    
+    ensure_directories_exist()
     # Export to Excel if requested
+    os.makedirs(f'../data_output/excel/{ticker_request.upper()}')
+    os.makedirs(f'../data_output/csv/{ticker_request.upper()}')
     if excel:
-        with pd.ExcelWriter(f"../data_output/excel/data_{ticker_request.upper()}.xlsx") as writer:
+        with pd.ExcelWriter(f"../data_output/excel/{ticker_request.upper()}/data_{ticker_request.upper()}.xlsx") as writer:
             BalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             IncomeStatement.to_excel(writer, sheet_name="Income Statement")
             CashFlow.to_excel(writer, sheet_name="Cash Flow")
                          
-        with pd.ExcelWriter(f"../data_output/excel/quarterly_data_{ticker_request.upper()}.xlsx") as writer:
+        with pd.ExcelWriter(f"../data_output/excel/{ticker_request.upper()}/quarterly_data_{ticker_request.upper()}.xlsx") as writer:
             qBalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             qIncomeStatement.to_excel(writer, sheet_name="Income Statement")
             qCashFlow.to_excel(writer, sheet_name="Cash Flow")
 
     if csv:
-        BalanceSheet.to_csv(f'../data_output/csv/balance_sheet_{ticker_request.upper()}.csv')
-        IncomeStatement.to_csv(f'../data_output/csv/income_statement_{ticker_request.upper()}.csv')
-        CashFlow.to_csv(f'../data_output/csv/cash_flow_{ticker_request.upper()}.csv')
+        BalanceSheet.to_csv(f'../data_output/csv/{ticker_request.upper()}/balance_sheet_{ticker_request.upper()}.csv')
+        IncomeStatement.to_csv(f'../data_output/csv/{ticker_request.upper()}/income_statement_{ticker_request.upper()}.csv')
+        CashFlow.to_csv(f'../data_output/csv/{ticker_request.upper()}/cash_flow_{ticker_request.upper()}.csv')
 
-        qBalanceSheet.to_csv(f'../data_output/csv/qbalance_sheet_{ticker_request.upper()}.csv')
-        qIncomeStatement.to_csv(f'../data_output/csv/qincome_statement_{ticker_request.upper()}.csv')
-        qCashFlow.to_csv(f'../data_output/csv/qcash_flow_{ticker_request.upper()}.csv')
+        qBalanceSheet.to_csv(f'../data_output/csv/{ticker_request.upper()}/qbalance_sheet_{ticker_request.upper()}.csv')
+        qIncomeStatement.to_csv(f'../data_output/csv/{ticker_request.upper()}/qincome_statement_{ticker_request.upper()}.csv')
+        qCashFlow.to_csv(f'../data_output/csv/{ticker_request.upper()}/qcash_flow_{ticker_request.upper()}.csv')
 
 def get_yn(prompt: str) -> bool:
     while True:
