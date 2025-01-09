@@ -13,6 +13,8 @@ import getstatements
 from datetime import datetime
 import os
 
+today_date = datetime.today().strftime('%y-%m-%d')
+
 # Function to create a table from a dataframe
 def create_table_from_dataframe(df):
     """Converts a pandas dataframe into a table for ReportLab with headers and index included."""
@@ -74,6 +76,10 @@ def plots(ticker, sector):
 def generate_pdf_report(file_name, symbol_request='MSFT'):
     
     info = get_info(symbol_request)
+    if info.get('company_name') == "Unknown Company Name":
+        print('Unable to find company.')
+        return
+
     
     doc = SimpleDocTemplate(file_name, pagesize=letter)
     styles = getSampleStyleSheet()
@@ -91,6 +97,7 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     elements.append(Spacer(1, 48))
 
     elements.append(Paragraph("Prepared using data from the last four years, using the 'yFinance' python library.", styles['Italic']))
+    elements.append(Paragraph(f"Report was made (yy/mm/dd): {today_date}"))
     elements.append(Spacer(1, 48))
     
     elements.append(PageBreak())
@@ -279,8 +286,12 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     colors = [colormap(i / len(ratios_to_plot)) for i in range(len(ratios_to_plot))]  # Generate distinct colors
 
     # Plot each ratio with a unique color
-    for i, (ratio, growth) in enumerate(zip(ratios_to_plot, ratios_growth)):
-        plt.plot(years, growth, label=ratio, marker='o', color=colors[i])
+    try:
+        for i, (ratio, growth) in enumerate(zip(ratios_to_plot, ratios_growth)):
+            plt.plot(years, growth, label=ratio, marker='o', color=colors[i])
+    except:
+        print("Was not able to graph data.")
+
 
     # Set labels and title
     plt.xlabel('Year')
@@ -318,10 +329,13 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
 
 # Call the function to generate the PDF
 def main():
-    today_date = datetime.today().strftime('%y-%m-%d')
+    
     parser = argparse.ArgumentParser(
         description='Python based program that can calculate financial ratios, growth rates, export financial statements and a report.',
-        usage='%(prog)s <ticker_request> [-r] [-s {excel,csv} [{excel,csv} ...]]\n Libraries Required (run this command): pip install -r requirements.txt\n Make sure pip is installed by running: pip --version'
+        usage="""%(prog)s <ticker_request> [-r] [-s {excel,csv} [{excel,csv} ...]]\n
+                Example: python main.py msft -r -s excel \n
+                Libraries Required (run this command): pip install -r requirements.txt\n
+                Make sure pip is installed by running: pip --version"""
         )
     
     parser.add_argument(
