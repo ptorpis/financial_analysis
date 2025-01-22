@@ -45,9 +45,9 @@ cd (change directory) to wherever you have saved this project.
 Whichever company you want to run the program with, pass its ticker as the first argument. Upper and lower case works the same.
 
 There are 2 modes - statements and report mode. These can be passed as arguments when running the program in the terminal.
-To generate a report, use the -r and if you want to export financial statements, use -s after the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
+To generate a report, use the -r and if you want to export financial statements, use -s. After the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
 
-    pythom main.py -h
+    python main.py -h
 
 or
 
@@ -63,14 +63,14 @@ If any other issues arise, please contact me.
 
 ## Output
 
-Files are created in the /data_output folder, in this folder there are 2 subfolders: /data_output/csv and ../excel (they might not be there before the first usage of the program, but they will be automatically created if they are not already there).
+Files are created in the data_output/ folder, in this folder there are 2 subfolders: data_output/csv/ and ../excel/ (they might not be there before the first usage of the program, but they will be automatically created).
 The statements for a company will be placed in their individual folders (these will be automatically created also).
 
 data_{COMPANY_TICKER}.xlsx contains the yearly statements and quarterly_data_{COMPANY_TICKER}.xlsx contains the last 4 quarterly statements.
 
 .csv files are similar, but the individiual statements will be placed in different files. Example: balance_sheet_{COMPANY_TICKER}.csv
 
-Reports are exported into /report. The files will be named based on the company's ticker and today's date.
+Reports are exported into report/. The files will be named based on the company's ticker and today's date.
 financial_report_{COMPANY_TICKER}_{DD-MM_YY}.pdf.
 
 ## Disclaimer
