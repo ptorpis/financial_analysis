@@ -40,7 +40,7 @@ cd (change directory) to wherever you have saved this project.
 
 ### Running the main script (example, Windows based):
 
-    python main.py msft -s -r excel csv
+    python main.py msft -r -s excel csv
 
 Whichever company you want to run the program with, pass its ticker as the first argument. Upper and lower case works the same.
 
