@@ -4,7 +4,6 @@
 
 This program is meant to help the financial analysis of a company's stock, mainly by allowing the user to export financial statements going back to the last 4 periods (4 years and/or 4 quarters).
 Main feature is the statement export, treat the report generation as an experimental feature.
-This tool is not meant to replace in depth analysis of financial statements.
 
 ## Features
 
@@ -17,13 +16,20 @@ This tool is not meant to replace in depth analysis of financial statements.
 
 To use this tool, you need to have Python installed on you computer, for this I recommend the latest verion, but 3.11+ will work for sure.
 
+If you don't already have python installed, follow this link:
+
+https://www.python.org/downloads/
+
 Required libraries: Install the dependencies listed in 'requirements.txt' by running the following command.
+
     pip install -r requirements.txt
 
 ## Usage
 
 1. Clone the repository to your machine:
-    git clone *placeholder*
+
+    git clone https://github.com/ptorpis/financial_analysis
+
 2. Navigate to the program's directory.
 3. Run the main script.
 
@@ -32,9 +38,56 @@ Required libraries: Install the dependencies listed in 'requirements.txt' by run
     python main.py msft -s -r excel csv
 
 There are 2 modes - statements and report mode. These can be passed as arguments when running the program in the terminal.
-To generate a report, use the 
-    -r 
-and if you want to export financial statements, use
-    -s
-after the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
+To generate a report, use the -r and if you want to export financial statements, use -s after the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
 
+    pythom main.py -h
+
+or
+
+    python main.py --help
+
+If you want to see the arguments and the usage.
+
+## Errors
+
+It is possible that the yFinance API is not responding, or the program cannot retireve the data for some other reason, empty tables will be returned.
+
+If any other issues arise, please contact me.
+
+## Output
+
+Files are created in the /data_output folder, in this folder there are 2 subfolders: /data_output/csv and ../excel (they might not be there before the first usage of the program, but they will be automatically created if they are not already there).
+The statements for a company will be placed in their individual folders (these will be automatically created also).
+
+data_{COMPANY_TICKER}.xlsx contains the yearly statements and quarterly_data_{COMPANY_TICKER}.xlsx contains the last 4 quarterly statements.
+
+.csv files are similar, but the individiual statements will be placed in different files. Example: balance_sheet_{COMPANY_TICKER}.csv
+
+Reports are exported into /report. The files will be named based on the company's ticker and today's date.
+financial_report_{COMPANY_TICKER}_{DD-MM_YY}.pdf.
+
+## Disclaimer
+
+This tool is for informational and educational purposes only. It is not intended to replace professional financial advice. The accuracy of these results cannot be guaranteed. The creator(s) are not liable for any decisions made based on the reports or exported data.
+
+## Contribution
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug-fix:
+
+    git checkout -b feature-name
+
+3. Commit your changes:
+
+    git commit -m 'Added feature-name'
+
+4. Push to your fork:
+
+    git push origin feature-name
+
+5. Open a pull request.
+
+
+## Contact
+
+For questions or support, please contact ptorpis@gmail.com
