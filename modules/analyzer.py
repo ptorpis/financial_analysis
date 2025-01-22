@@ -6,7 +6,7 @@ import logging
 
 
 logging.basicConfig(
-    filename='../.logs/main.log',
+    filename='.logs/main.log',
     filemode='w',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -22,7 +22,7 @@ METHODS = {
 }
 
 # Loading necessary datapoints from external file
-df = pd.read_csv('../data/datapoints.csv')
+df = pd.read_csv('data/datapoints.csv')
 balance_sheet_datapoints = df['balance_sheet'].tolist()
 income_statement_datapoints = df['income_statement'].dropna().tolist()
 cash_flow_datapoints = df['cash_flow'].dropna().tolist()
@@ -78,7 +78,7 @@ class FinancialAnalyzer:
 
     def analyze(self):
         try:
-            with open("../data/ratios.json", 'r') as file:
+            with open("data/ratios.json", 'r') as file:
                 formulas = json.load(file)
         except FileNotFoundError:
             logging.error(f"{file} File Not Found.")
@@ -129,7 +129,7 @@ class FinancialAnalyzer:
     
     # Calculating the difference between the industry average and the calculated values
     def difference(self):
-        df_averages = pd.read_csv("../data/averages.csv", header=0, index_col='ratios')
+        df_averages = pd.read_csv("data/averages.csv", header=0, index_col='ratios')
         
         self.df_difference = pd.DataFrame()
 
@@ -182,12 +182,12 @@ class FinancialAnalyzer:
         return self.df_growth_rates
     
     def export_csv(self):
-        self.data.to_csv(f"../data_output/{self.ticker_text}_data_analysis.csv", index=False)
-        self.df_ratios.to_csv(f"../data_output/{self.ticker_text}_ratios_analysis.csv", index=False)
-        self.df_difference.to_csv(f"../data_output/{self.ticker_text}_difference_analysis.csv", index=False)
+        self.data.to_csv(f"data_output/{self.ticker_text}_data_analysis.csv", index=False)
+        self.df_ratios.to_csv(f"data_output/{self.ticker_text}_ratios_analysis.csv", index=False)
+        self.df_difference.to_csv(f"data_output/{self.ticker_text}_difference_analysis.csv", index=False)
 
         if len(self.years) >= 2:
-            self.df_growth_rates.to_csv(f"../data_output/{self.ticker_text}_growth_analysis.csv")
+            self.df_growth_rates.to_csv(f"data_output/{self.ticker_text}_growth_analysis.csv")
 
 
 
@@ -260,15 +260,15 @@ def main():
         match export_method:
             case 1: # Exporting to .csv
                 
-                CompanyData.to_csv(f"../data_output/{ticker.upper()}_data_analysis.csv", index=False)
-                Ratios.to_csv(f"../data_output/{ticker.upper()}_ratios_analysis.csv", index=False)
-                Difference.to_csv(f"../data_output/{ticker.upper()}_difference_analysis.csv", index=False)
+                CompanyData.to_csv(f"data_output/{ticker.upper()}_data_analysis.csv", index=False)
+                Ratios.to_csv(f"data_output/{ticker.upper()}_ratios_analysis.csv", index=False)
+                Difference.to_csv(f"data_output/{ticker.upper()}_difference_analysis.csv", index=False)
 
                 if years_request >= 2:
-                    GrowthRates.to_csv(f"../data_output/{ticker.upper()}_growth_analysis.csv")
+                    GrowthRates.to_csv(f"data_output/{ticker.upper()}_growth_analysis.csv")
 
             case 2: # Exporting to Excel File (.xlsx)
-                with pd.ExcelWriter(f"../data_output/{ticker.upper()}_data_analysis.xlsx") as writer:
+                with pd.ExcelWriter(f"data_output/{ticker.upper()}_data_analysis.xlsx") as writer:
                     
                     CompanyData.to_excel(writer, sheet_name="Data", index=False)
                     Ratios.to_excel(writer, sheet_name="Ratios", index=False)

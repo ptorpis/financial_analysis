@@ -68,7 +68,7 @@ def get_info(ticker_symbol):
             }
     
 def plots(ticker, sector):
-    averages = pd.read_csv('../data/averages.csv', header=0)
+    averages = pd.read_csv('data/averages.csv', header=0)
     sector_avg = averages[sector]
 
 
@@ -108,7 +108,7 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     elements.append(Spacer(1, 24))
     # Placeholder for Table
 
-    datapoints = pd.read_csv('../data/datapoints.csv')
+    datapoints = pd.read_csv('data/datapoints.csv')
     analysis = an.FinancialAnalyzer(symbol_request)
     company_data = pd.DataFrame()
     company_data = analysis.load_data(
@@ -203,7 +203,7 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     #     elements.append(Spacer(1, 24))
 
     sector = info['sector'].lower()
-    averages = pd.read_csv('../data/averages.csv')
+    averages = pd.read_csv('data/averages.csv')
 
     ratio_index_map = {
         'current_ratio': 0,
@@ -269,9 +269,9 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     plt.subplots_adjust(hspace=0.5)  # Optional: fine-tune the vertical space between subplots
 
     # Save or show the plot
-    plt.savefig(f'../data_output/{symbol_request}_ratios.png', dpi=300)
+    plt.savefig(f'data_output/{symbol_request}_ratios.png', dpi=300)
 
-    elements.append(Image(f'../data_output/{symbol_request}_ratios.png', width=3*72, height=6*72))
+    elements.append(Image(f'data_output/{symbol_request}_ratios.png', width=3*72, height=6*72))
 
     growth_rates = analysis.growth_rates()
     years = ['2022', '2023', '2024']
@@ -305,8 +305,8 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     plt.grid(True)
 
     # Save the plot as a PNG (optional)
-    plt.savefig(f'../data_output/{symbol_request}_rate_all.png', dpi=300)
-    elements.append(Image(f'../data_output/{symbol_request}_rate_all.png', width=8*72, height=4*72))
+    plt.savefig(f'data_output/{symbol_request}_rate_all.png', dpi=300)
+    elements.append(Image(f'data_output/{symbol_request}_rate_all.png', width=8*72, height=4*72))
     
     elements.append(PageBreak())
 
@@ -322,8 +322,8 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     
     # Build the document with all the elements
     doc.build(elements)
-    os.remove(f'../data_output/{symbol_request}_ratios.png')
-    os.remove(f'../data_output/{symbol_request}_rate_all.png')
+    os.remove(f'data_output/{symbol_request}_ratios.png')
+    os.remove(f'data_output/{symbol_request}_rate_all.png')
 
 
 
@@ -362,7 +362,7 @@ def main():
 
 
     if args.report:
-        generate_pdf_report(f"../report/financial_report_{args.ticker_request}_{today_date}.pdf", args.ticker_request)
+        generate_pdf_report(f"report/financial_report_{args.ticker_request}_{today_date}.pdf", args.ticker_request)
     
     if args.statements:
 
