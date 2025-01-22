@@ -19,8 +19,12 @@ def ensure_directories_exist():
 
     # Check and create each directory
     for directory in directories:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+        except FileExistsError:
+            pass
+
 
 PERIODS = 4 # The max number of periods we are accessing through yFinance (anything more will give dubious data or missing altogether)
 
@@ -47,13 +51,12 @@ class GetStatements:
         except Exception:
             logging.error("Failed to load Cash Flow Statement.")
 
-        earnings = self.ticker.earnings_dates
-
         return {
             "balance_sheet": self.balance_sheet.iloc[:, :PERIODS],
             "income_statement": self.income_statement.iloc[:, :PERIODS],
             "cash_flow": self.cash_flow.iloc[:, :PERIODS],
         }
+
 
     def get_quarterly_statements(self):
         try:
@@ -98,9 +101,13 @@ def retrieve_and_export_statements(ticker_request: str, excel, csv):
     
     ensure_directories_exist()
     # Export to Excel if requested
-    os.makedirs(f'../data_output/excel/{ticker_request.upper()}')
-    os.makedirs(f'../data_output/csv/{ticker_request.upper()}')
+    
     if excel:
+        try:
+            os.makedirs(f'../data_output/excel/{ticker_request.upper()}')
+        except FileExistsError:
+            pass
+
         with pd.ExcelWriter(f"../data_output/excel/{ticker_request.upper()}/data_{ticker_request.upper()}.xlsx") as writer:
             BalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             IncomeStatement.to_excel(writer, sheet_name="Income Statement")
@@ -112,6 +119,11 @@ def retrieve_and_export_statements(ticker_request: str, excel, csv):
             qCashFlow.to_excel(writer, sheet_name="Cash Flow")
 
     if csv:
+        try:
+            os.makedirs(f'../data_output/csv/{ticker_request.upper()}')
+        except FileExistsError:
+            pass
+
         BalanceSheet.to_csv(f'../data_output/csv/{ticker_request.upper()}/balance_sheet_{ticker_request.upper()}.csv')
         IncomeStatement.to_csv(f'../data_output/csv/{ticker_request.upper()}/income_statement_{ticker_request.upper()}.csv')
         CashFlow.to_csv(f'../data_output/csv/{ticker_request.upper()}/cash_flow_{ticker_request.upper()}.csv')

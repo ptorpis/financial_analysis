@@ -5,11 +5,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 import pandas as pd
 import yfinance as yf
-import analyzer
+import modules.analyzer as an
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
-import getstatements
+import modules.getstatements as gs
 from datetime import datetime
 import os
 
@@ -109,7 +109,7 @@ def generate_pdf_report(file_name, symbol_request='MSFT'):
     # Placeholder for Table
 
     datapoints = pd.read_csv('../data/datapoints.csv')
-    analysis = analyzer.FinancialAnalyzer(symbol_request)
+    analysis = an.FinancialAnalyzer(symbol_request)
     company_data = pd.DataFrame()
     company_data = analysis.load_data(
         datapoints['balance_sheet'].tolist(),
@@ -369,7 +369,7 @@ def main():
         export_excel = 'excel' in args.statements
         export_csv = 'csv' in args.statements
 
-        getstatements.retrieve_and_export_statements(
+        gs.retrieve_and_export_statements(
             ticker_request = args.ticker_request,
             excel=export_excel,
             csv=export_csv
