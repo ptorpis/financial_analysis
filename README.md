@@ -1,120 +1,40 @@
-# financial_analysis
+# Financial Analysis
 
-### Output Files
-The `/data_output` directory is used to store generated output files. This folder is not tracked in the repository except for a placeholder file `.gitkeep`.
+## Overview
 
-## Modules
-### analyzer.py
+This program is meant to help the financial analysis of a company's stock, mainly by allowing the user to export financial statements going back to the last 4 periods (4 years and/or 4 quarters).
+Main feature is the statement export, treat the report generation as an experimental feature.
+This tool is not meant to replace in depth analysis of financial statements.
 
+## Features
 
-### getstatements.py
+ - Export financial statements (balance sheet, income statement, and cash flow statements). The program is written in python and is utilizing the yFinance library to access data.
+ - Generate a PDF rerport containing some general numbers in a table, key financial ratios, growth rates and the company's performance compared to sector averages, some visualization of the data. 
+ 
+ The sector averages were collected by me, but I cannot guarantee the accuracy of the data.
 
-Overview
+## Prerequisites
 
-The getstatements.py module is designed to retrieve financial statements for a specified company from Yahoo Finance using the yfinance library. It provides functionality to extract annual and quarterly financial statements, including the balance sheet, income statement, and cash flow statement. Users can choose to export the retrieved data into Excel or CSV formats for further analysis.
+To use this tool, you need to have Python installed on you computer, for this I recommend the latest verion, but 3.11+ will work for sure.
 
-Features
-    Fetch Financial Data:
-        Retrieves annual and quarterly financial statements from Yahoo Finance.
-    
-    Includes:
-        Balance Sheets
-        Income Statements
-        Cash Flow Statements
-    
-    Customizable Data Export:
-        Save statements in Excel (.xlsx) or CSV (.csv) formats.
-        Separate files for annual and quarterly data.
+Required libraries: Install the dependencies listed in 'requirements.txt' by running the following command.
+    pip install -r requirements.txt
 
-    Error Logging:
-        Logs issues encountered during data retrieval to ../.logs/main.log.
-    
-    Requirements
-        Python 3.7+
-        Libraries:
-            yfinance
-            pandas
-            logging
+## Usage
 
-    Install the required libraries using:
-        pip install yfinance pandas
+1. Clone the repository to your machine:
+    git clone *placeholder*
+2. Navigate to the program's directory.
+3. Run the main script.
 
-Usage:
-    To use the script, run it directly from the terminal (make sure your current directory is "/modules").
-        python getstatements.py
+### Running the main script (example, Windows based):
 
-Input: 
-    Ticker Request: Enter the stock ticker of the company (e.g., AAPL for Apple Inc.).
-    This input is not case sensitive (it will accept aapl for Apple Inc., or any combination of lower and uppercase letters, as long as they spell the company's ticker)
-    
-    Export Files: Choose whether to export data to Excel files (y/n).
+    python main.py msft -s -r excel csv
 
-Outputs:
-    The script retrieves financial data and displays the following statements in the terminal:
-
-    Annual:
-        Balance Sheet
-        Income Statement
-        Cash Flow Statement
-    
-    Quarterly:
-        Balance Sheet
-        Income Statement
-        Cash Flow Statement
-    
-    If export options are selected, the data is saved in the following directories:
-    
-    Excel Output:
-        Annual data: ../data_output/{TICKER}_data.xlsx
-        Quarterly data: ../data_output/{TICKER}_quarterly_data.xlsx
-    
-    CSV Reports:
-        Annual data: ../report/ (e.g., balance_sheetAAPL.csv, income_statementAAPL.csv)
-        Quarterly data: ../report/ (e.g., qbalance_sheetAAPL.csv, qincome_statementAAPL.csv)
-    
-    Exported Files
-        AAPL_data.xlsx (Excel file containing annual data)
-        AAPL_quarterly_data.xlsx (Excel file containing quarterly data)
-
-Functions:
-    GetStatements
-        A class to retrieve and store financial statements for a given ticker.
-
-    Attributes:
-
-        ticker: The Yahoo Finance ticker object for the company.
-        balance_sheet, income_statement, cash_flow: Pandas DataFrames for the respective statements.
-    
-    Methods:
-
-        get_statements: Retrieves annual statements.
-        get_quarterly_statements: Retrieves quarterly statements.
-        retrieve_and_export_statements(ticker_request: str, export: bool, report: bool)
-        
-        Fetches financial data for the specified ticker, displays it in the terminal, and optionally exports it.
-
-    Parameters:
-        ticker_request: The stock ticker to fetch data for (e.g., AAPL).
-        export: If True, saves data to Excel files.
-        report: If True, saves data to CSV files.
-        get_yn(prompt: str) -> bool
-        Prompts the user for a yes or no input.
-
-    main()
-        The entry point for the script. Handles user input and calls retrieve_and_export_statements.
-
-Logging
-    Logs errors (e.g., failed data retrieval) to ../.logs/main.log.
-    
-    Most of it can be ignored.
-
-    Example log message:
-        2024-12-12 10:45:23 - ERROR - Failed to load Balance Sheet.
-
-Limitations
-    Data Periods: Only retrieves up to 4 periods of data due to potential issues with larger datasets.
-    
-    Dependencies: Relies on the accuracy and availability of data from Yahoo Finance.
-    
-    Error Handling: Logs failures but does not terminate execution on errors.
+There are 2 modes - statements and report mode. These can be passed as arguments when running the program in the terminal.
+To generate a report, use the 
+    -r 
+and if you want to export financial statements, use
+    -s
+after the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
 
