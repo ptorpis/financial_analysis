@@ -26,16 +26,23 @@ Required libraries: Install the dependencies listed in 'requirements.txt' by run
 
 ## Usage
 
-1. Clone the repository to your machine:
+1. Clone the repository to your machine (in some terminal):
 
     git clone https://github.com/ptorpis/financial_analysis
 
 2. Navigate to the program's directory.
-3. Run the main script.
+
+    cd path/to/download
+
+cd (change directory) to wherever you have saved this project.
+
+4. Run the main script.
 
 ### Running the main script (example, Windows based):
 
     python main.py msft -s -r excel csv
+
+Whichever company you want to run the program with, pass its ticker as the first argument. Upper and lower case works the same.
 
 There are 2 modes - statements and report mode. These can be passed as arguments when running the program in the terminal.
 To generate a report, use the -r and if you want to export financial statements, use -s after the flag -s, you need to specify which format you want the statements to be exported in. You can choose from 'excel' and 'csv' (both can be passed at the same time).
