@@ -104,33 +104,33 @@ def retrieve_and_export_statements(ticker_request: str, excel, csv):
     
     if excel:
         try:
-            os.makedirs(f'../data_output/excel/{ticker_request.upper()}')
+            os.makedirs(f'data_output/excel/{ticker_request.upper()}')
         except FileExistsError:
             pass
 
-        with pd.ExcelWriter(f"../data_output/excel/{ticker_request.upper()}/data_{ticker_request.upper()}.xlsx") as writer:
+        with pd.ExcelWriter(f"data_output/excel/{ticker_request.upper()}/data_{ticker_request.upper()}.xlsx") as writer:
             BalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             IncomeStatement.to_excel(writer, sheet_name="Income Statement")
             CashFlow.to_excel(writer, sheet_name="Cash Flow")
                          
-        with pd.ExcelWriter(f"../data_output/excel/{ticker_request.upper()}/quarterly_data_{ticker_request.upper()}.xlsx") as writer:
+        with pd.ExcelWriter(f"data_output/excel/{ticker_request.upper()}/quarterly_data_{ticker_request.upper()}.xlsx") as writer:
             qBalanceSheet.to_excel(writer, sheet_name="Balance Sheet")
             qIncomeStatement.to_excel(writer, sheet_name="Income Statement")
             qCashFlow.to_excel(writer, sheet_name="Cash Flow")
 
     if csv:
         try:
-            os.makedirs(f'../data_output/csv/{ticker_request.upper()}')
+            os.makedirs(f'data_output/csv/{ticker_request.upper()}')
         except FileExistsError:
             pass
 
-        BalanceSheet.to_csv(f'../data_output/csv/{ticker_request.upper()}/balance_sheet_{ticker_request.upper()}.csv')
-        IncomeStatement.to_csv(f'../data_output/csv/{ticker_request.upper()}/income_statement_{ticker_request.upper()}.csv')
-        CashFlow.to_csv(f'../data_output/csv/{ticker_request.upper()}/cash_flow_{ticker_request.upper()}.csv')
+        BalanceSheet.to_csv(f'data_output/csv/{ticker_request.upper()}/balance_sheet_{ticker_request.upper()}.csv')
+        IncomeStatement.to_csv(f'data_output/csv/{ticker_request.upper()}/income_statement_{ticker_request.upper()}.csv')
+        CashFlow.to_csv(f'data_output/csv/{ticker_request.upper()}/cash_flow_{ticker_request.upper()}.csv')
 
-        qBalanceSheet.to_csv(f'../data_output/csv/{ticker_request.upper()}/qbalance_sheet_{ticker_request.upper()}.csv')
-        qIncomeStatement.to_csv(f'../data_output/csv/{ticker_request.upper()}/qincome_statement_{ticker_request.upper()}.csv')
-        qCashFlow.to_csv(f'../data_output/csv/{ticker_request.upper()}/qcash_flow_{ticker_request.upper()}.csv')
+        qBalanceSheet.to_csv(f'data_output/csv/{ticker_request.upper()}/qbalance_sheet_{ticker_request.upper()}.csv')
+        qIncomeStatement.to_csv(f'data_output/csv/{ticker_request.upper()}/qincome_statement_{ticker_request.upper()}.csv')
+        qCashFlow.to_csv(f'data_output/csv/{ticker_request.upper()}/qcash_flow_{ticker_request.upper()}.csv')
 
 def get_yn(prompt: str) -> bool:
     while True:
