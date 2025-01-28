@@ -20,10 +20,6 @@ If you don't already have python installed, follow this link:
 
 https://www.python.org/downloads/
 
-Required libraries: Install the dependencies listed in 'requirements.txt' by running the following command.
-
-    pip install -r requirements.txt
-
 ## Usage
 
 1. Clone the repository to your machine (in some terminal):
@@ -35,6 +31,10 @@ Required libraries: Install the dependencies listed in 'requirements.txt' by run
     cd path/to/download
 
 cd (change directory) to wherever you have saved this project.
+
+3. Required libraries: Install the dependencies listed in 'requirements.txt' by running the following command.
+
+    pip install -r requirements.txt
 
 4. Run the main script.
 
